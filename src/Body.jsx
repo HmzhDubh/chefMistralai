@@ -5,7 +5,7 @@ import { getRecipeFromChefClaude, getRecipeFromMistral } from "./ai"
 
 
 export default function Main() {
-    const [ingredients, setIngredients] = React.useState([])
+    const [ingredients, setIngredients] = React.useState(['checkin', 'corn', 'heavy cream', 'pasta'])
     const [recipe, setRecipe] = React.useState("")
 
     async function getRecipe() {
@@ -14,6 +14,13 @@ export default function Main() {
         setRecipe(recipeResponse)
 
     }
+    const recipeSection = React.useRef(null)
+    React.useEffect(() => {
+        if(recipe && recipeSection){
+            recipeSection.current.scrollIntoView({behavior: 'smooth'})
+        }
+
+    }, [recipe])
 
     function addIngredient(formData) {
         const newIngredient = formData.get("ingredient")
@@ -34,6 +41,7 @@ export default function Main() {
 
             {ingredients.length > 0 &&
                 <IngredientsList
+                    ref={recipeSection}
                     ingredients={ingredients}
                     getRecipe={getRecipe}
                 />
